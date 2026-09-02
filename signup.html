@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Create Account — AderaLearn</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="auth-page">
+
+    <main class="auth-wrap">
+
+        <div class="auth-card">
+
+            <a href="index.html" class="brand auth-brand">
+                <img src="assets/logo.png" alt="AderaLearn Logo" class="logo">
+                <span>AderaLearn</span>
+            </a>
+
+            <span class="eyebrow">GET STARTED</span>
+
+            <h1>Create your account</h1>
+
+            <p class="auth-sub">
+                Learn any topic, ask questions, and test yourself with AI.
+            </p>
+
+            <div id="authNotice" class="auth-notice" hidden></div>
+
+            <form id="signupForm" class="auth-form" novalidate>
+
+                <label class="auth-field">
+                    <span>Full name</span>
+                    <input
+                        type="text"
+                        id="name"
+                        autocomplete="name"
+                        placeholder="Ada Lovelace"
+                        required>
+                </label>
+
+                <label class="auth-field">
+                    <span>Email</span>
+                    <input
+                        type="email"
+                        id="email"
+                        autocomplete="email"
+                        placeholder="you@example.com"
+                        required>
+                </label>
+
+                <label class="auth-field">
+                    <span>Password</span>
+                    <input
+                        type="password"
+                        id="password"
+                        autocomplete="new-password"
+                        placeholder="At least 6 characters"
+                        required>
+                </label>
+
+                <button type="submit" class="btn btn-primary btn-large">
+                    Create account
+                </button>
+
+            </form>
+
+            <p class="auth-switch">
+                Already have an account?
+                <a href="login.html">Sign in</a>
+            </p>
+
+        </div>
+
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script src="js/supabaseClient.js"></script>
+    <script src="js/auth-forms.js"></script>
+
+</body>
+
+</html>

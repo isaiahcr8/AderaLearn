@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard — AderaLearn</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body class="dashboard-page" data-auth-required>
+
+    <aside class="sidebar">
+
+        <a href="index.html" class="brand">
+            <img src="assets/logo.png" alt="AderaLearn Logo" class="logo">
+            <span>AderaLearn</span>
+        </a>
+
+        <nav class="sidebar-nav">
+
+            <a href="dashboard.html" class="sidebar-link active">
+                <span>⌂</span>
+                Dashboard
+            </a>
+
+            <a href="#" class="sidebar-link">
+                <span>📚</span>
+                Learn
+            </a>
+
+            <a href="#" class="sidebar-link">
+                <span>▣</span>
+                My Lessons
+            </a>
+
+            <a href="#" class="sidebar-link">
+                <span>✓</span>
+                Quiz History
+            </a>
+
+            <a href="tutor.html" class="sidebar-link">
+                <span>✦</span>
+                AI Tutor
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <a href="#" class="sidebar-link">
+                <span>⚙</span>
+                Settings
+            </a>
+
+            <a href="index.html" class="sidebar-link">
+                <span>↪</span>
+                Log Out
+            </a>
+
+        </div>
+
+    </aside>
+
+
+
+    <main class="dashboard-main">
+
+
+        <header class="dashboard-header">
+
+            <div class="user-profile">
+
+                <div class="avatar">
+                    I
+                </div>
+
+                <div>
+                    <strong>Student</strong>
+                    <small>Learning Explorer</small>
+                </div>
+
+            </div>
+
+            <button class="notification-btn">
+                ♢
+                <span></span>
+            </button>
+
+        </header>
+
+
+
+        <section class="welcome-section">
+
+            <div>
+
+                <span class="eyebrow">
+                    YOUR LEARNING SPACE
+                </span>
+
+                <h1>
+                    Good morning 👋
+                </h1>
+
+                <p>
+                    What would you like to learn today?
+                </p>
+
+            </div>
+
+
+            <div class="learning-streak">
+
+                <span>🔥</span>
+
+                <div>
+                    <strong>5 day streak</strong>
+                    <small>Keep it going!</small>
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <section class="topic-search">
+
+            <div class="search-icon">
+                ⌕
+            </div>
+
+            <input
+                type="text"
+                id="topicInput"
+                placeholder="What do you want to learn? e.g. Photosynthesis"
+            >
+
+            <button id="learnButton" class="btn btn-primary">
+                Start Learning →
+            </button>
+
+        </section>
+
+
+
+        <section class="dashboard-section">
+
+            <div class="section-title">
+
+                <div>
+                    <span class="eyebrow">
+                        EXPLORE
+                    </span>
+
+                    <h2>
+                        Choose a subject
+                    </h2>
+                </div>
+
+                <a href="#" class="view-all">
+                    View all →
+                </a>
+
+            </div>
+
+
+            <div class="subject-grid">
+
+                <button
+                    class="subject-card mathematics"
+                    data-subject="Mathematics"
+                >
+                    <span class="subject-icon">
+                        ∑
+                    </span>
+
+                    <strong>
+                        Mathematics
+                    </strong>
+
+                    <small>
+                        Numbers & problem solving
+                    </small>
+                </button>
+
+
+                <button
+                    class="subject-card biology"
+                    data-subject="Biology"
+                >
+                    <span class="subject-icon">
+                        🧬
+                    </span>
+
+                    <strong>
+                        Biology
+                    </strong>
+
+                    <small>
+                        Life & living things
+                    </small>
+                </button>
+
+
+                <button
+                    class="subject-card chemistry"
+                    data-subject="Chemistry"
+                >
+                    <span class="subject-icon">
+                        ⚗
+                    </span>
+
+                    <strong>
+                        Chemistry
+                    </strong>
+
+                    <small>
+                        Matter & reactions
+                    </small>
+                </button>
+
+
+                <button
+                    class="subject-card physics"
+                    data-subject="Physics"
+                >
+                    <span class="subject-icon">
+                        ◉
+                    </span>
+
+                    <strong>
+                        Physics
+                    </strong>
+
+                    <small>
+                        Energy & motion
+                    </small>
+                </button>
+
+
+                <button
+                    class="subject-card english"
+                    data-subject="English"
+                >
+                    <span class="subject-icon">
+                        Aa
+                    </span>
+
+                    <strong>
+                        English
+                    </strong>
+
+                    <small>
+                        Language & literature
+                    </small>
+                </button>
+
+            </div>
+
+        </section>
+
+
+
+        <section class="dashboard-section">
+
+            <div class="section-title">
+
+                <div>
+                    <span class="eyebrow">
+                        KEEP GOING
+                    </span>
+
+                    <h2>
+                        Continue learning
+                    </h2>
+                </div>
+
+                <a href="#" class="view-all">
+                    View all →
+                </a>
+
+            </div>
+
+
+            <div class="lesson-grid">
+
+                <article class="lesson-card">
+
+                    <div class="lesson-top">
+                        <span class="lesson-tag">
+                            BIOLOGY
+                        </span>
+
+                        <span>
+                            65%
+                        </span>
+                    </div>
+
+                    <h3>
+                        Photosynthesis
+                    </h3>
+
+                    <p>
+                        Learn how plants convert light energy into chemical energy.
+                    </p>
+
+                    <div class="progress">
+                        <div style="width: 65%;"></div>
+                    </div>
+
+                    <button class="continue-btn">
+                        Continue →
+                    </button>
+
+                </article>
+
+
+                <article class="lesson-card">
+
+                    <div class="lesson-top">
+                        <span class="lesson-tag">
+                            PHYSICS
+                        </span>
+
+                        <span>
+                            35%
+                        </span>
+                    </div>
+
+                    <h3>
+                        Motion & Forces
+                    </h3>
+
+                    <p>
+                        Understand how forces affect the movement of objects.
+                    </p>
+
+                    <div class="progress">
+                        <div style="width: 35%;"></div>
+                    </div>
+
+                    <button class="continue-btn">
+                        Continue →
+                    </button>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+
+        <section class="dashboard-bottom">
+
+
+            <div class="performance-card">
+
+                <div class="card-heading">
+
+                    <div>
+                        <span class="eyebrow">
+                            YOUR PROGRESS
+                        </span>
+
+                        <h2>
+                            Quiz performance
+                        </h2>
+                    </div>
+
+                    <span class="score-circle">
+                        82%
+                    </span>
+
+                </div>
+
+                <div class="performance-bars">
+
+                    <div>
+                        <span>
+                            Biology
+                        </span>
+
+                        <div class="bar">
+                            <div style="width: 90%;"></div>
+                        </div>
+
+                        <strong>
+                            90%
+                        </strong>
+                    </div>
+
+
+                    <div>
+                        <span>
+                            Physics
+                        </span>
+
+                        <div class="bar">
+                            <div style="width: 75%;"></div>
+                        </div>
+
+                        <strong>
+                            75%
+                        </strong>
+                    </div>
+
+
+                    <div>
+                        <span>
+                            Mathematics
+                        </span>
+
+                        <div class="bar">
+                            <div style="width: 81%;"></div>
+                        </div>
+
+                        <strong>
+                            81%
+                        </strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="ai-dashboard-card">
+
+                <div class="ai-small-icon">
+                    ✦
+                </div>
+
+                <span class="eyebrow">
+                    AI TUTOR
+                </span>
+
+                <h2>
+                    Stuck on something?
+                </h2>
+
+                <p>
+                    Ask AderaLearn AI to explain a difficult concept
+                    in a way that's easier to understand.
+                </p>
+
+                <a href="tutor.html" class="btn btn-primary">
+                    Ask AI →
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/config.js"></script>
+    <script src="js/supabaseClient.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/ai.js"></script>
+    <script src="js/app.js"></script>
+
+</body>
+
+</html>

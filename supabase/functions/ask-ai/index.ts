@@ -1,30 +1,3 @@
-// Supabase Edge Function: ask-ai
-// -----------------------------------------------------------------------------
-// Provider-neutral chat proxy for AderaLearn. One self-contained file, no npm
-// imports, no secrets in the code - safe to paste straight into the Supabase
-// dashboard (Edge Functions -> Create a new function -> name it "ask-ai").
-//
-// Set these in the dashboard:
-//   Project Settings -> Edge Functions -> Secrets   (or Edge Functions -> Secrets)
-//
-//   AI_API_KEY     (required)  your provider API key
-//
-//   AI_PROVIDER    (optional)  "gemini" (default) | "openai" | "anthropic"
-//   AI_MODEL       (optional)  model id; a sane per-provider default is used if unset
-//   AI_BASE_URL    (optional)  override base URL for OpenAI-compatible APIs
-//                              (Groq, OpenRouter, Together, LM Studio, ...)
-//   REQUIRE_AUTH   (optional)  "true" -> reject callers who are not a signed-in
-//                              Supabase user (anon key alone is not enough)
-//   ALLOW_ORIGIN   (optional)  CORS origin to allow (default "*")
-//
-// SUPABASE_URL / SUPABASE_ANON_KEY are injected automatically by the platform
-// and are only read for the optional REQUIRE_AUTH check.
-//
-// Request  JSON: { messages: [{ role: "user" | "ai", text: string }],
-//                  topic?: string, subject?: string }
-// Response JSON: { text: string }   or   { error: string }
-// -----------------------------------------------------------------------------
-
 const PROVIDER = (Deno.env.get("AI_PROVIDER") ?? "gemini").toLowerCase().trim();
 const API_KEY = Deno.env.get("AI_API_KEY") ?? "";
 const MODEL = (Deno.env.get("AI_MODEL") ?? "").trim();
@@ -37,7 +10,6 @@ const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "";
 const SUPABASE_ANON_KEY = Deno.env.get("SUPABASE_ANON_KEY") ?? "";
 
 const DEFAULT_MODEL: Record<string, string> = {
-  // Override any of these with the AI_MODEL secret without editing this file.
   gemini: "gemini-3.6-flash",
   openai: "gpt-4o-mini",
   anthropic: "claude-haiku-4-5-20251001",
@@ -61,8 +33,6 @@ function json(body: unknown, status = 200): Response {
   });
 }
 
-// Retry transient provider errors (rate limit / overloaded / brief 5xx) a few
-// times with backoff before giving up.
 async function aiFetch(
   url: string,
   init: RequestInit,
@@ -89,8 +59,6 @@ async function aiFetch(
 type InMsg = { role?: string; text?: string };
 type Norm = { role: "user" | "assistant"; text: string };
 
-// Turn the app's { role: "user" | "ai", text } list into a clean, provider-
-// agnostic transcript that starts with a user turn.
 function normalize(raw: unknown): Norm[] {
   const list = Array.isArray(raw) ? (raw as InMsg[]) : [];
   const out: Norm[] = [];

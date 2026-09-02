@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
             localStorage.setItem(CHATS_KEY, JSON.stringify(chats));
             localStorage.setItem(ACTIVE_KEY, activeId);
         } catch (e) {
-            /* storage unavailable — keep working in memory only */
+            return;
         }
     }
 

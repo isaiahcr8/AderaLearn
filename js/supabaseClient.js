@@ -1,9 +1,3 @@
-/*
- * Creates a single shared Supabase client from the values in js/config.js.
- * Exposes:
- *   window.sb           -> the Supabase client, or null if not configured
- *   window.ADERA_READY  -> true when the client is usable
- */
 (function () {
     "use strict";
 

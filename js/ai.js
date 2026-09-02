@@ -1,13 +1,3 @@
-/*
- * Calls the "ask-ai" Supabase Edge Function, which talks to Google Gemini on
- * the server side. The Gemini key never touches the browser.
- *
- * Exposes:
- *   window.askAderaAI({ messages, topic, subject }) -> Promise<string>
- *   window.ADERA_AI_READY                           -> boolean
- *
- * `messages` is an array of { role: "user" | "ai", text: string }.
- */
 (function () {
     "use strict";
 

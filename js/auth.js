@@ -1,14 +1,3 @@
-/*
- * Shared auth behaviour for the signed-in pages.
- *
- * - Pages with  <body data-auth-required>  redirect to login.html when there is
- *   no active session.
- * - Fills the header profile (name / email / avatar initial) from the user.
- * - Turns every "Log Out" link into a real sign-out.
- *
- * If Supabase is not configured (js/config.js is blank) this does nothing and
- * the site keeps working in demo mode.
- */
 (function () {
     "use strict";
 
@@ -16,7 +5,6 @@
     var needsAuth =
         document.body && document.body.hasAttribute("data-auth-required");
 
-    // Hide protected content until the session check finishes (no flash).
     if (sb && needsAuth) {
         document.documentElement.style.visibility = "hidden";
     }
@@ -119,7 +107,6 @@
                 }
             });
         }, function () {
-            // If the session check fails, don't leave the page blank.
             reveal();
         });
     });

@@ -1,6 +1,3 @@
-/*
- * Drives login.html and signup.html against Supabase Auth (email + password).
- */
 document.addEventListener("DOMContentLoaded", function () {
     "use strict";
 
@@ -19,7 +16,6 @@ document.addEventListener("DOMContentLoaded", function () {
     function nextTarget() {
         var params = new URLSearchParams(window.location.search);
         var next = params.get("next") || "dashboard.html";
-        // Only allow same-site relative targets.
         if (/^https?:|^\/\//i.test(next)) {
             return "dashboard.html";
         }
@@ -40,7 +36,6 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
     }
 
-    // Already signed in -> skip straight through.
     sb.auth.getSession().then(function (res) {
         if (res && res.data && res.data.session) {
             window.location.replace(nextTarget());

@@ -3,7 +3,7 @@
 An AI-powered learning companion. Pick a subject, get a structured lesson,
 ask a tutor follow-up questions, then test yourself with an auto-generated quiz.
 
-**Live demo:** _add your deployed URL_
+**Live demo:** <https://aderalearn.vercel.app>
 **Built for:** speed ai september challenge
 
 ---

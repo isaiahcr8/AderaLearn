@@ -21,8 +21,8 @@
 
     if (!hasConfig) {
         console.warn(
-            "[AderaLearn] Supabase is not configured. Add your keys in js/config.js " +
-            "(see README). Login and live AI stay disabled until then."
+            "[AderaLearn] Supabase is not configured. Add your keys in js/config.js. " +
+            "Login and live AI stay disabled until then."
         );
     } else if (!hasLib) {
         console.warn(

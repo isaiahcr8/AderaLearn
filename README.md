@@ -52,33 +52,12 @@ static server — and open the served URL.
 Without configuration the site runs in **demo mode**: no login is required and
 the tutor uses built-in sample replies.
 
-## Enable accounts and live AI
+## Configuration
 
-1. **Create a Supabase project** and from **Project Settings → API** copy the
-   **Project URL** and the **anon public** key.
-2. **Add them to [`js/config.js`](js/config.js)** (both are safe in the browser):
-   ```js
-   window.ADERA_CONFIG = {
-       SUPABASE_URL: "https://YOUR-PROJECT.supabase.co",
-       SUPABASE_ANON_KEY: "your-anon-key"
-   };
-   ```
-3. **Auth settings** — in **Authentication → URL Configuration**, set the
-   **Site URL** and **Redirect URLs** to where the site is served.
-4. **Deploy the Edge Function** — in the Supabase dashboard, **Edge Functions →
-   Create a new function**, name it `ask-ai`, paste
-   [`supabase/functions/ask-ai/index.ts`](supabase/functions/ask-ai/index.ts),
-   and Deploy. Leave **Verify JWT** on.
-5. **Set the function secrets** — **Edge Functions → Secrets**:
-
-   | Secret | Required | Notes |
-   |---|---|---|
-   | `AI_API_KEY` | yes | provider key (e.g. Google AI Studio for Gemini) |
-   | `AI_PROVIDER` | no | `gemini` (default) · `openai` · `anthropic` |
-   | `AI_MODEL` | no | override the default model name |
-   | `AI_BASE_URL` | no | base URL for an OpenAI-compatible API |
-   | `REQUIRE_AUTH` | no | `true` to reject non-signed-in callers |
-   | `ALLOW_ORIGIN` | no | lock CORS to a single origin |
+Public config (Supabase URL + anon key) lives in
+[`js/config.js`](js/config.js). Leave it blank to run in demo mode; fill it in,
+deploy the [`ask-ai`](supabase/functions/ask-ai/index.ts) Edge Function, and set
+an `AI_API_KEY` secret on it to enable real accounts and live AI.
 
 ## Project structure
 

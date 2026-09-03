@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (!sb) {
         setNotice(
-            "Sign-in is not configured yet. Add your Supabase keys in js/config.js (see SETUP.md).",
+            "Sign-in is not configured yet. Add your Supabase keys in js/config.js (see README).",
             "error"
         );
         var form = signupForm || loginForm;

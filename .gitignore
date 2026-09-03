@@ -1,14 +1,11 @@
 .env
 .env.*
 node_modules/
-
-# OS / editor
 .DS_Store
 Thumbs.db
 *.log
-.vscode/
+.vscode/*
+!.vscode/settings.json
 .idea/
-
-# Supabase CLI local files (not used here, but just in case)
 supabase/.branches/
 supabase/.temp/

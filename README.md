@@ -21,12 +21,13 @@ AderaLearn gives every learner a patient tutor and a feedback loop:
 
 ## Features
 
-- Topic-aware AI lessons and quizzes
-- Full-page **AI Tutor** with saved conversations, new-chat / clear-chat, and the
-  current topic in view
+- Topic-aware AI lessons (structured: title, introduction, explanation, examples,
+  key points, summary) generated on demand
+- AI quizzes: strict-JSON multiple-choice questions with four options, a real
+  score on submit, and per-question explanations revealed only afterwards
+- Full-page **AI Tutor** with saved conversations, new-chat / clear-chat, a
+  loading state, and an inline retry when a request fails
 - Email + password accounts with protected pages and session persistence
-- Works with **zero setup** in demo mode (no login, sample tutor replies) so it is
-  always runnable
 - Fully responsive (desktop sidebar collapses on tablet / mobile)
 
 ## Tech stack
@@ -49,8 +50,18 @@ No install, no build. Serve the folder over HTTP (auth needs a real origin, so
 `file://` will not work) — e.g. the VS Code **Live Server** extension, or any
 static server — and open the served URL.
 
-Without configuration the site runs in **demo mode**: no login is required and
-the tutor uses built-in sample replies.
+The AI features (tutor, lesson, quiz) require the Supabase config in
+[`js/config.js`](js/config.js) and a deployed [`ask-ai`](supabase/functions/ask-ai/index.ts)
+Edge Function with an `AI_API_KEY` secret. Without them the AI pages show a clear
+"not configured" message instead of failing silently.
+
+### `ask-ai` request types
+
+The frontend sends `type: "tutor" | "lesson" | "quiz"` (missing = `tutor`). Each
+type has its own server-side system prompt and output-token limit; `lesson` and
+`quiz` return validated strict JSON. Provider-specific code (Gemini / OpenAI /
+Anthropic) stays isolated in the function, so the browser never sees a provider
+detail or an API key.
 
 ## Configuration
 

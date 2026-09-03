@@ -2349,3 +2349,320 @@ footer .brand {
         padding: 30px 22px;
     }
 }
+
+/* ------------------------------------------------------------------ */
+/* AI states: loading, errors, retry (tutor + lesson + quiz)          */
+/* ------------------------------------------------------------------ */
+
+.typing-dots {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.typing-dots span {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.35;
+    animation: aderaBlink 1.2s infinite ease-in-out;
+}
+
+.typing-dots span:nth-child(2) {
+    animation-delay: 0.15s;
+}
+
+.typing-dots span:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+@keyframes aderaBlink {
+    0%, 80%, 100% {
+        opacity: 0.25;
+        transform: translateY(0);
+    }
+    40% {
+        opacity: 1;
+        transform: translateY(-3px);
+    }
+}
+
+.ai-message.is-error {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    border-color: rgba(248, 113, 113, 0.4);
+    background: rgba(248, 113, 113, 0.08);
+    color: #FCA5A5;
+}
+
+.chat-error-text {
+    margin: 0;
+    color: inherit;
+    font-size: inherit;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
+.chat-retry-btn {
+    align-self: flex-start;
+    padding: 6px 14px;
+    border: 1px solid rgba(248, 113, 113, 0.5);
+    border-radius: 9px;
+    background: transparent;
+    color: #FCA5A5;
+    font-family: inherit;
+    font-size: 12px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.chat-retry-btn:hover {
+    background: rgba(248, 113, 113, 0.15);
+    color: #fff;
+}
+
+/* Disabled state for the retry / generate controls during a rate-limit
+   cooldown. Scoped so existing buttons (e.g. auth forms) are untouched. */
+.chat-retry-btn:disabled,
+.lesson-panel .btn:disabled,
+.quiz-panel .btn:disabled,
+#generateLessonBtn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.chat-note {
+    align-self: center;
+    max-width: 90%;
+    color: #85858E;
+    font-size: 11px;
+    font-style: italic;
+    text-align: center;
+}
+
+/* ------------------------------------------------------------------ */
+/* lesson page: subject / topic / difficulty controls + AI states     */
+/* ------------------------------------------------------------------ */
+
+.lesson-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 12px;
+    margin-bottom: 20px;
+    padding: 16px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: #0C0C0F;
+}
+
+.lesson-control {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1 1 150px;
+    min-width: 0;
+    font-size: 12px;
+    color: var(--silver);
+}
+
+.lesson-control-topic {
+    flex: 2 1 220px;
+}
+
+.lesson-control select,
+.lesson-control input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: #17171B;
+    color: #fff;
+    font-family: inherit;
+    font-size: 13px;
+    outline: none;
+    transition: 0.2s;
+}
+
+.lesson-control select:focus,
+.lesson-control input:focus {
+    border-color: rgba(139, 92, 246, 0.5);
+}
+
+.lesson-controls .btn {
+    flex-shrink: 0;
+}
+
+.lesson-panel,
+.quiz-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    text-align: center;
+    padding: 24px 0;
+}
+
+.lesson-panel p,
+.quiz-panel p {
+    max-width: 42ch;
+    overflow-wrap: anywhere;
+}
+
+.quiz-panel {
+    padding: 48px 20px;
+}
+
+.lesson-panel .ai-small-icon,
+.quiz-panel .ai-small-icon {
+    margin: 0;
+}
+
+.lesson-panel.is-error .ai-small-icon,
+.quiz-panel.is-error .ai-small-icon {
+    background: rgba(248, 113, 113, 0.14);
+    color: #FCA5A5;
+}
+
+.lesson-panel .btn,
+.quiz-panel .btn {
+    margin-top: 6px;
+}
+
+@media (max-width: 600px) {
+
+    .lesson-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .lesson-controls .btn {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* ------------------------------------------------------------------ */
+/* result page: answer review                                         */
+/* ------------------------------------------------------------------ */
+
+.quiz-review {
+    display: block;
+    margin-top: 30px;
+    text-align: left;
+}
+
+.quiz-review:empty {
+    display: none;
+}
+
+.quiz-review-title {
+    font-family: "Space Grotesk", sans-serif;
+    font-size: 1.1rem;
+    margin-bottom: 14px;
+}
+
+.review-item {
+    margin-bottom: 14px;
+    padding: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.review-q-label {
+    color: #8B5CF6;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+}
+
+.review-q {
+    margin: 6px 0 12px;
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.review-options {
+    display: grid;
+    gap: 8px;
+}
+
+.review-option {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 10px;
+    padding: 10px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    border-radius: 10px;
+    font-size: 0.88rem;
+}
+
+.review-option.is-correct {
+    border-color: rgba(34, 197, 94, 0.5);
+    background: rgba(34, 197, 94, 0.1);
+}
+
+.review-option.is-wrong {
+    border-color: rgba(248, 113, 113, 0.5);
+    background: rgba(248, 113, 113, 0.1);
+}
+
+.review-badge {
+    width: 26px;
+    height: 26px;
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    border-radius: 7px;
+    background: rgba(139, 92, 246, 0.12);
+    color: #A78BFA;
+    font-weight: 700;
+    font-size: 0.8rem;
+}
+
+.review-text {
+    flex: 1 1 120px;
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.review-tag {
+    flex-shrink: 0;
+    margin-left: auto;
+    color: #A1A1AA;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.review-explain {
+    margin-top: 10px;
+    color: #A1A1AA;
+    font-size: 0.82rem;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
+.review-explain strong {
+    color: #CBD5E1;
+}
+
+@media (max-width: 600px) {
+
+    .review-item {
+        padding: 14px;
+    }
+
+    .review-tag {
+        margin-left: 34px; /* line up under the option text, not the badge */
+        flex-basis: 100%;
+    }
+}

@@ -218,34 +218,87 @@ document.addEventListener("DOMContentLoaded", () => {
         renderTopic();
     }
 
-    function buildReply(question, chat) {
-        const q = question.toLowerCase();
-        const topic = chat.topic;
-        const subject = chat.subject ? " in " + chat.subject : "";
+    let sending = false;
 
-        if (q.indexOf("example") !== -1) {
-            return "Here's how I'd set up an example for " + topic + subject + ". " +
-                "Once the live AI is connected you'll get a worked example with every step explained.";
+    function setComposerEnabled(on) {
+        questionInput.disabled = !on;
+
+        const submitBtn = chatForm.querySelector("button[type=submit]");
+        if (submitBtn) {
+            submitBtn.disabled = !on;
         }
 
-        if (q.indexOf("quiz") !== -1 || q.indexOf("test") !== -1) {
-            return "Practising is the best way to lock in " + topic + ". " +
-                "Head to the Quiz page to test yourself, or ask me to explain any part first.";
+        if (suggested) {
+            suggested.querySelectorAll("button").forEach((button) => {
+                button.disabled = !on;
+            });
         }
-
-        if (q.indexOf("simpl") !== -1 || q.indexOf("explain") !== -1) {
-            return topic + " is easiest to understand when you break it into small parts and " +
-                "connect each one to something familiar. Ask me about any part that is still unclear.";
-        }
-
-        return "That's a good question about " + topic + subject + ". " +
-            "For now this is a sample response — once the AI is connected, AderaLearn will give you a full explanation.";
     }
 
-    function sendMessage(text) {
-        const chat = getActive();
+    function makePending() {
+        const el = document.createElement("div");
+        el.className = "ai-message is-pending";
+        el.setAttribute("aria-label", "AderaLearn AI is typing");
+        el.innerHTML =
+            '<span class="typing-dots"><span></span><span></span><span></span></span>';
+        return el;
+    }
 
-        if (!chat) {
+    // Seconds to keep retry disabled after an error (only for quota limits).
+    function cooldownFor(err) {
+        if (err && err.code === "RATE_LIMITED") {
+            const secs = Number(err.retryAfter);
+            return isFinite(secs) && secs > 0 ? secs : 60;
+        }
+        return 0;
+    }
+
+    // Disable `button` with a visible "(Ns)" countdown, then re-enable and call
+    // onReady(). Repeated clicks while disabled are ignored by the caller.
+    function wireCountdown(button, seconds, onReady) {
+        let remaining = Math.ceil(Number(seconds) || 0);
+        let timer = null;
+        const label = button.textContent || "Retry";
+
+        const finish = () => {
+            if (timer) {
+                clearInterval(timer);
+                timer = null;
+            }
+            button.disabled = false;
+            button.textContent = label;
+            if (typeof onReady === "function") {
+                onReady();
+            }
+        };
+
+        const tick = () => {
+            if (remaining <= 0) {
+                finish();
+                return;
+            }
+            button.disabled = true;
+            button.textContent = `${label} (${remaining}s)`;
+            remaining -= 1;
+        };
+
+        if (remaining > 0) {
+            tick();
+            timer = setInterval(tick, 1000);
+        }
+    }
+
+    function sendMessage(rawText) {
+        const chat = getActive();
+        const text = (rawText || "").trim();
+
+        if (!chat || sending || text === "") {
+            return;
+        }
+
+        // Block an identical, still-unanswered question from being sent twice.
+        const last = chat.messages[chat.messages.length - 1];
+        if (last && last.role === "user" && last.text === text) {
             return;
         }
 
@@ -259,35 +312,121 @@ document.addEventListener("DOMContentLoaded", () => {
         saveChats();
         renderAll();
 
-        const pending = makeBubble("ai", "Thinking…");
+        sending = true;
+        setComposerEnabled(false);
+
+        const pending = makePending();
         chatMessages.appendChild(pending);
         chatMessages.scrollTop = chatMessages.scrollHeight;
 
-        const finish = (replyText) => {
-            const current = getActive();
+        const release = () => {
+            sending = false;
+            setComposerEnabled(true);
+            questionInput.focus();
+        };
 
-            if (!current || current.id !== chat.id) {
+        const sameChat = () => {
+            const current = getActive();
+            return current && current.id === chat.id;
+        };
+
+        const finish = (reply) => {
+            if (!sameChat()) {
+                release();
                 return;
             }
 
-            current.messages.push({ role: "ai", text: replyText });
+            pending.remove();
+
+            const current = getActive();
+            current.messages.push({ role: "ai", text: reply.text });
             current.updatedAt = Date.now();
             saveChats();
             renderAll();
+
+            if (reply.truncated) {
+                const note = document.createElement("div");
+                note.className = "chat-note";
+                note.textContent =
+                    "That was a long answer and may still be shortened — ask a follow-up for more detail.";
+                chatMessages.appendChild(note);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+
+            release();
+        };
+
+        const showError = (message, cooldown) => {
+            if (!sameChat()) {
+                release();
+                return;
+            }
+
+            pending.remove();
+            sending = false;
+
+            const wrap = document.createElement("div");
+            wrap.className = "ai-message is-error";
+
+            const line = document.createElement("p");
+            line.className = "chat-error-text";
+            line.textContent =
+                message || "Something went wrong reaching the tutor.";
+            wrap.appendChild(line);
+
+            const retry = document.createElement("button");
+            retry.type = "button";
+            retry.className = "chat-retry-btn";
+            retry.textContent = "Retry";
+            retry.addEventListener("click", () => {
+                if (retry.disabled) {
+                    return;
+                }
+
+                wrap.remove();
+
+                const current = getActive();
+                const tail = current && current.messages[current.messages.length - 1];
+                if (tail && tail.role === "user" && tail.text === text) {
+                    current.messages.pop();
+                    saveChats();
+                    renderAll();
+                }
+
+                sendMessage(text);
+            });
+            wrap.appendChild(retry);
+
+            chatMessages.appendChild(wrap);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            if (cooldown && cooldown > 0) {
+                // Keep the composer locked too, so a fresh question cannot be
+                // sent during the quota cooldown.
+                setComposerEnabled(false);
+                wireCountdown(retry, cooldown, () => setComposerEnabled(true));
+            } else {
+                setComposerEnabled(true);
+                questionInput.focus();
+            }
         };
 
         if (typeof window.askAderaAI === "function" && window.ADERA_AI_READY) {
             const history = chat.messages.slice(-12);
 
-            window.askAderaAI({
-                messages: history,
-                topic: chat.topic,
-                subject: chat.subject
-            })
+            window
+                .askAderaAI({
+                    messages: history,
+                    topic: chat.topic,
+                    subject: chat.subject
+                })
                 .then(finish)
-                .catch(() => finish(buildReply(text, chat)));
+                .catch((err) => showError(err && err.message, cooldownFor(err)));
         } else {
-            window.setTimeout(() => finish(buildReply(text, chat)), 700);
+            showError(
+                "The AI tutor is not configured yet. Add your Supabase keys in js/config.js.",
+                0
+            );
         }
     }
 
@@ -301,6 +440,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     chatForm.addEventListener("submit", (event) => {
         event.preventDefault();
+
+        if (sending) {
+            return;
+        }
 
         const text = questionInput.value.trim();
 

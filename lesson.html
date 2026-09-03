@@ -124,27 +124,65 @@
 
             <article class="lesson-content">
 
-       <div class="lesson-meta">
-    <span id="lessonSubject">Subject</span>
-    <span>•</span>
-    <span>Beginner</span>
-</div>
+                <form class="lesson-controls" id="lessonControls">
 
-<div class="lesson-body" id="lessonContent">
+                    <label class="lesson-control">
+                        <span>Subject</span>
+                        <select id="lessonSubjectSelect">
+                            <option value="Mathematics">Mathematics</option>
+                            <option value="Biology">Biology</option>
+                            <option value="Chemistry">Chemistry</option>
+                            <option value="Physics">Physics</option>
+                            <option value="English">English</option>
+                        </select>
+                    </label>
 
-    <div class="lesson-loading">
+                    <label class="lesson-control lesson-control-topic">
+                        <span>Topic</span>
+                        <input
+                            type="text"
+                            id="lessonTopicInput"
+                            placeholder="e.g. Photosynthesis"
+                            autocomplete="off"
+                        >
+                    </label>
 
-        <div class="ai-small-icon">✦</div>
+                    <label class="lesson-control">
+                        <span>Difficulty</span>
+                        <select id="lessonDifficultySelect">
+                            <option value="Beginner">Beginner</option>
+                            <option value="Intermediate">Intermediate</option>
+                            <option value="Advanced">Advanced</option>
+                        </select>
+                    </label>
 
-        <h2>Preparing your lesson...</h2>
+                    <button type="submit" class="btn btn-primary" id="generateLessonBtn">
+                        Generate lesson
+                    </button>
 
-        <p>
-            AderaLearn is creating an easy-to-understand lesson for you.
-        </p>
+                </form>
 
-    </div>
+                <div class="lesson-meta">
+                    <span id="lessonSubject">Subject</span>
+                    <span>•</span>
+                    <span id="lessonDifficulty">Beginner</span>
+                </div>
 
-</div>
+                <div class="lesson-body" id="lessonContent">
+
+                    <div class="lesson-loading">
+
+                        <div class="ai-small-icon">✦</div>
+
+                        <h2>Preparing your lesson...</h2>
+
+                        <p>
+                            AderaLearn is creating an easy-to-understand lesson for you.
+                        </p>
+
+                    </div>
+
+                </div>
 
                 <div class="lesson-quiz-cta">
 

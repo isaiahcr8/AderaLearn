@@ -4,7 +4,7 @@ An AI-powered learning companion. Pick a subject, get a structured lesson,
 ask a tutor follow-up questions, then test yourself with an auto-generated quiz.
 
 **Live demo:** _add your deployed URL_
-**Built for:** _add hackathon name_
+**Built for:** speed ai september challenge
 
 ---
 
@@ -79,5 +79,4 @@ supabase/functions/ask-ai/     Edge Function (AI proxy)
 ```
 
 ## Team
-
-_add names / roles_
+Aboyeji Isaiah - Full stack developer

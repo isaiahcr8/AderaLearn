@@ -22,6 +22,26 @@ document.addEventListener("DOMContentLoaded", function () {
         return next;
     }
 
+    // Supabase sends the student back to this page after they click the
+    // confirmation link in their email. On success it either lands a session
+    // token in the URL hash (#access_token=...&type=signup) or, on newer
+    // projects, a `?code=` query param to exchange; on failure — an expired or
+    // already-used link — it attaches #error / #error_description instead.
+    // Without reading these, a finished confirmation looks like a blank page
+    // and a failed one looks like nothing happened at all.
+    function readConfirmationOutcome() {
+        var hash = new URLSearchParams(window.location.hash.replace(/^#/, ""));
+        var query = new URLSearchParams(window.location.search);
+
+        return {
+            error: hash.get("error") || query.get("error"),
+            errorDescription:
+                hash.get("error_description") || query.get("error_description"),
+            code: query.get("code"),
+            confirmed: query.get("confirmed") === "1" || hash.get("type") === "signup"
+        };
+    }
+
     if (!sb) {
         setNotice(
             "Sign-in is not configured yet. Add your Supabase keys in js/config.js.",
@@ -36,11 +56,42 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
     }
 
-    sb.auth.getSession().then(function (res) {
-        if (res && res.data && res.data.session) {
-            window.location.replace(nextTarget());
-        }
-    });
+    var outcome = readConfirmationOutcome();
+
+    if (outcome.error) {
+        var friendly = (outcome.errorDescription || "").replace(/\+/g, " ") ||
+            "That confirmation link is no longer valid.";
+        setNotice(
+            friendly + " Request a new one by signing up again, or sign in below " +
+                "if you already confirmed your email.",
+            "error"
+        );
+    }
+
+    // On newer Supabase projects the confirmation link comes back as
+    // `?code=...` instead of a token in the hash — exchange it first so the
+    // getSession() call below sees the resulting session either way.
+    var exchange =
+        outcome.code && !outcome.error && typeof sb.auth.exchangeCodeForSession === "function"
+            ? sb.auth.exchangeCodeForSession(window.location.href).catch(function () {
+                  /* ignore — getSession() below still covers the hash-based flow */
+              })
+            : Promise.resolve();
+
+    exchange
+        .then(function () {
+            return sb.auth.getSession();
+        })
+        .then(function (res) {
+            if (res && res.data && res.data.session) {
+                window.location.replace(nextTarget());
+                return;
+            }
+
+            if (outcome.confirmed && !outcome.error) {
+                setNotice("Your email is confirmed. Sign in below to continue.", "success");
+            }
+        });
 
     if (signupForm) {
         signupForm.addEventListener("submit", function (e) {
@@ -67,7 +118,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 .signUp({
                     email: email,
                     password: password,
-                    options: { data: { full_name: name } }
+                    options: {
+                        data: { full_name: name },
+                        // Send the student back to THIS deployment, not whatever
+                        // "Site URL" happens to be set in the Supabase dashboard.
+                        // That URL must also be added to Authentication -> URL
+                        // Configuration -> Redirect URLs, or Supabase will refuse
+                        // to redirect to it.
+                        emailRedirectTo:
+                            window.location.origin + "/login.html?confirmed=1"
+                    }
                 })
                 .then(function (res) {
                     btn.disabled = false;

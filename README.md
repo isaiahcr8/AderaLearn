@@ -70,6 +70,22 @@ Public config (Supabase URL + anon key) lives in
 deploy the [`ask-ai`](supabase/functions/ask-ai/index.ts) Edge Function, and set
 an `AI_API_KEY` secret on it to enable real accounts and live AI.
 
+### Email confirmation redirect
+
+Sign-up sends Supabase's confirmation email with
+`emailRedirectTo: <this deployment>/login.html?confirmed=1` (see
+[`js/auth-forms.js`](js/auth-forms.js)). For the confirmation link to land on
+the app instead of Supabase's own error page, in the Supabase dashboard go to
+**Authentication → URL Configuration** and set:
+
+- **Site URL** to the deployment's origin, e.g. `https://aderalearn.vercel.app`
+- **Redirect URLs** to include `https://aderalearn.vercel.app/**` (and, for
+  local testing, whatever origin your local server uses, e.g.
+  `http://localhost:5500/**`)
+
+If a URL isn't in that allow-list, Supabase refuses to redirect to it and shows
+its own "requested path is invalid" page instead of the app.
+
 ## Project structure
 
 ```

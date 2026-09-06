@@ -1138,6 +1138,219 @@ footer .brand {
     }
 }
 
+/* ------------------------------------------------------------------ */
+/* Dashboard mobile layout (<= 768px).                                 */
+/* Appended last so it wins the cascade over the 800px / 600px blocks. */
+/* Sidebar rules are scoped to .dashboard-page so other pages that     */
+/* share .sidebar are left untouched. Nothing here runs above 768px,   */
+/* so desktop is unchanged.                                            */
+/* ------------------------------------------------------------------ */
+@media (max-width: 768px) {
+
+    /* Sidebar -> slim icon-only rail (dashboard only) */
+    .dashboard-page .sidebar {
+        width: 58px;
+        padding: 20px 7px;
+    }
+
+    .dashboard-page .sidebar .brand {
+        justify-content: center;
+        padding: 0;
+        margin-bottom: 26px;
+    }
+
+    .dashboard-page .sidebar .brand span {
+        display: none;
+    }
+
+    .dashboard-page .sidebar .logo {
+        width: 34px;
+        height: 34px;
+    }
+
+    .dashboard-page .sidebar-link {
+        justify-content: center;
+        gap: 0;
+        padding: 12px 0;
+        font-size: 0;
+    }
+
+    .dashboard-page .sidebar-link span {
+        width: auto;
+        font-size: 18px;
+    }
+
+    /* Main content takes the rest of the viewport and cannot overflow it */
+    .dashboard-main {
+        margin-left: 58px;
+        padding: 0 14px 44px;
+        max-width: 100%;
+        overflow-x: clip;
+    }
+
+    .dashboard-main > * {
+        min-width: 0;
+        max-width: 100%;
+    }
+
+    /* Header: shrink the profile block, truncate the email safely */
+    .dashboard-header {
+        gap: 12px;
+    }
+
+    .user-profile {
+        min-width: 0;
+        flex: 1 1 auto;
+    }
+
+    .user-profile .avatar {
+        flex-shrink: 0;
+    }
+
+    .user-profile > div {
+        min-width: 0;
+        flex: 1 1 auto;
+    }
+
+    .user-profile strong,
+    .user-profile small {
+        display: block;
+        max-width: 100%;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    .notification-btn {
+        flex-shrink: 0;
+    }
+
+    /* Welcome row stacks */
+    .welcome-section {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 18px;
+        padding: 30px 0 22px;
+    }
+
+    .welcome-section h1 {
+        font-size: 28px;
+    }
+
+    .learning-streak {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    /* Search: wraps to full width, no fixed min-width */
+    .topic-search {
+        flex-wrap: wrap;
+        row-gap: 10px;
+        margin-bottom: 36px;
+    }
+
+    .topic-search .search-icon {
+        order: 1;
+    }
+
+    .topic-search input {
+        order: 2;
+        flex: 1 1 140px;
+        min-width: 0;
+    }
+
+    .topic-search .btn {
+        order: 3;
+        width: 100%;
+        flex: 1 1 100%;
+    }
+
+    /* Section headers wrap instead of squashing */
+    .section-title {
+        flex-wrap: wrap;
+        gap: 4px 12px;
+    }
+
+    /* Grids -> two columns here, one column below 520px; cards fill width */
+    .subject-grid,
+    .lesson-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .subject-card,
+    .lesson-card {
+        min-width: 0;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    /* Bottom section stacks; both cards fill the width */
+    .dashboard-bottom {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .performance-card,
+    .ai-dashboard-card {
+        min-width: 0;
+        width: 100%;
+        max-width: 100%;
+        padding: 20px;
+    }
+
+    /* Quiz-performance card: title + score wrap, chart rows drop fixed columns */
+    .card-heading {
+        flex-wrap: wrap;
+        gap: 10px 14px;
+        margin-bottom: 20px;
+    }
+
+    .card-heading .score-circle {
+        flex-shrink: 0;
+    }
+
+    .performance-bars > div {
+        grid-template-columns: auto 1fr auto;
+        gap: 10px;
+    }
+}
+
+/* Narrow phones: subject / lesson grids go single-column */
+@media (max-width: 520px) {
+
+    .subject-grid,
+    .lesson-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Smallest phones: fully stack each quiz-performance chart row */
+@media (max-width: 430px) {
+
+    .performance-bars > div {
+        grid-template-columns: 1fr auto;
+        grid-template-areas:
+            "label label"
+            "bar   value";
+        row-gap: 6px;
+        column-gap: 10px;
+    }
+
+    .performance-bars > div > span {
+        grid-area: label;
+    }
+
+    .performance-bars > div > .bar {
+        grid-area: bar;
+        align-self: center;
+    }
+
+    .performance-bars > div > strong {
+        grid-area: value;
+    }
+}
+
 .lesson-page {
     min-height: 100vh;
     background: var(--black);

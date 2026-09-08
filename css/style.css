@@ -4,14 +4,68 @@
     box-sizing: border-box;
 }
 
+/* Dark is the default theme. Light is applied via <html data-theme="light">
+   (see js/theme.js). Every colour below is a token so the two palettes stay
+   in sync; a few base values are shifted by one step so a global find/replace
+   of the old literals never rewrites a token's own definition. */
 :root {
-    --black: #09090B;
-    --purple: #8B5CF6;
-    --violet: #6D28D9;
-    --silver: #CBD5E1;
-    --white: #FFFFFF;
-    --card: #111114;
-    --border: rgba(255, 255, 255, 0.09);
+    --black: #09090B;            /* page background */
+    --purple: #8B5CF7;           /* accent */
+    --violet: #6D28DA;           /* accent (darker / hover / gradient end) */
+    --silver: #CBD5E2;           /* secondary text */
+    --white: #FEFEFE;            /* alias of --text, kept for older rules */
+    --card: var(--surface);
+    --border: rgba(255, 255, 255, 0.095);
+
+    --surface: #111115;          /* raised card surface */
+    --surface-sunken: #0C0C0E;   /* inputs, sidebar, sunken panels */
+    --surface-raised: #17171C;   /* chips, list items, hovers */
+    --surface-glass: rgba(255, 255, 255, 0.033);
+    --track: #252528;            /* progress / meter tracks */
+    --text: #FDFDFD;             /* primary text */
+    --text-muted: #90909A;       /* muted body text */
+    --text-faint: #76767F;       /* labels, timestamps, placeholders */
+    --border-strong: rgba(255, 255, 255, 0.125);
+    --accent-soft: #B49AFF;      /* pale purple accent on dark */
+    --on-accent: rgb(255, 255, 255); /* text on a solid purple fill */
+    --danger-text: #FCA5A6;
+    --success-text: #86EFAD;
+    --navbar-bg: rgba(9, 9, 11, 0.86);
+    --shadow-strong: rgba(0, 0, 0, 0.52);
+}
+
+:root[data-theme="light"] {
+    --black: #F5F6F8;
+    --purple: var(--violet);
+    --violet: #5B21B6;
+    --silver: #4B4B52;
+    --white: #1B1B1F;
+    --card: rgb(255, 255, 255);
+    --border: rgba(17, 17, 22, 0.12);
+
+    --surface: rgb(255, 255, 255);
+    --surface-sunken: #EDEFF3;
+    --surface-raised: #F2F3F6;
+    --surface-glass: rgba(17, 17, 22, 0.03);
+    --track: #E1E3E9;
+    --text: #1B1B1F;
+    --text-muted: #55555E;
+    --text-faint: #74747D;
+    --border-strong: rgba(17, 17, 22, 0.16);
+    --accent-soft: var(--violet);
+    --on-accent: rgb(255, 255, 255);
+    --danger-text: #B42318;
+    --success-text: #15803D;
+    --navbar-bg: rgba(245, 246, 248, 0.85);
+    --shadow-strong: rgba(17, 17, 22, 0.12);
+}
+
+:root {
+    color-scheme: dark;
+}
+
+:root[data-theme="light"] {
+    color-scheme: light;
 }
 
 html {
@@ -37,7 +91,7 @@ a {
     justify-content: space-between;
     padding: 0 6%;
     border-bottom: 1px solid var(--border);
-    background: rgba(9, 9, 11, 0.85);
+    background: var(--navbar-bg);
     -webkit-backdrop-filter: blur(15px);
     backdrop-filter: blur(15px);
     position: sticky;
@@ -61,6 +115,7 @@ a {
     place-items: center;
     border-radius: 10px;
     background: linear-gradient(135deg, var(--purple), var(--violet));
+    color: var(--on-accent);
     font-size: 13px;
     font-weight: 700;
 }
@@ -106,7 +161,7 @@ nav a:hover {
 
 .btn-primary {
     background: var(--purple);
-    color: white;
+    color: var(--on-accent);
 }
 
 .btn-primary:hover {
@@ -118,11 +173,11 @@ nav a:hover {
 .btn-secondary {
     border: 1px solid var(--border);
     color: var(--silver);
-    background: rgba(255, 255, 255, 0.03);
+    background: var(--surface-glass);
 }
 
 .btn-secondary:hover {
-    color: white;
+    color: var(--text);
     border-color: rgba(139, 92, 246, 0.5);
 }
 
@@ -165,7 +220,7 @@ nav a:hover {
     padding: 7px 13px;
     border: 1px solid rgba(139, 92, 246, 0.35);
     border-radius: 30px;
-    color: #D8C8FF;
+    color: var(--accent-soft);
     background: rgba(139, 92, 246, 0.08);
     font-size: 13px;
     margin-bottom: 24px;
@@ -186,7 +241,7 @@ h1 {
 
 h1 span,
 h2 span {
-    background: linear-gradient(90deg, var(--purple), #B69CFF);
+    background: linear-gradient(90deg, var(--purple), var(--accent-soft));
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -221,7 +276,7 @@ h2 span {
 }
 
 .hero-stats span {
-    color: #71717A;
+    color: var(--text-faint);
     font-size: 12px;
 }
 
@@ -231,11 +286,11 @@ h2 span {
 }
 
 .ai-window {
-    background: rgba(17, 17, 20, 0.9);
+    background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 24px;
     padding: 22px;
-    box-shadow: 0 30px 100px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 30px 100px var(--shadow-strong);
 }
 
 .ai-header {
@@ -253,6 +308,7 @@ h2 span {
     display: grid;
     place-items: center;
     background: linear-gradient(135deg, var(--purple), var(--violet));
+    color: var(--on-accent);
 }
 
 .ai-header strong {
@@ -260,7 +316,7 @@ h2 span {
 }
 
 .ai-header small {
-    color: #71717A;
+    color: var(--text-faint);
 }
 
 .online-dot {
@@ -288,10 +344,11 @@ h2 span {
 .message.student {
     align-self: flex-end;
     background: var(--purple);
+    color: var(--on-accent);
 }
 
 .message.ai {
-    background: #1A1A1F;
+    background: var(--surface-raised);
     color: var(--silver);
 }
 
@@ -302,13 +359,13 @@ h2 span {
     border: 1px solid var(--border);
     padding: 10px;
     border-radius: 12px;
-    color: #71717A;
+    color: var(--text-faint);
 }
 
 .fake-input button {
     border: 0;
     background: var(--purple);
-    color: white;
+    color: var(--on-accent);
     width: 32px;
     height: 32px;
     border-radius: 9px;
@@ -369,7 +426,7 @@ h2 {
 }
 
 .feature-card p {
-    color: #8D8D96;
+    color: var(--text-muted);
     font-size: 14px;
 }
 
@@ -395,7 +452,7 @@ h2 {
 }
 
 .step p {
-    color: #8D8D96;
+    color: var(--text-muted);
     font-size: 14px;
 }
 
@@ -406,7 +463,7 @@ h2 {
     border-radius: 25px;
     background:
         radial-gradient(circle at 80% 50%, rgba(109, 40, 217, 0.25), transparent 45%),
-        #111114;
+        var(--surface);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -425,11 +482,11 @@ footer {
     padding: 30px 8%;
     display: flex;
     justify-content: space-between;
-    color: #71717A;
+    color: var(--text-faint);
 }
 
 footer .brand {
-    color: white;
+    color: var(--text);
 }
 
 @media (max-width: 900px) {
@@ -526,7 +583,7 @@ footer .brand {
     width: 245px;
     padding: 28px 18px;
     border-right: 1px solid var(--border);
-    background: #0C0C0F;
+    background: var(--surface-sunken);
     display: flex;
     flex-direction: column;
     z-index: 100;
@@ -558,7 +615,7 @@ footer .brand {
     gap: 13px;
     padding: 12px 14px;
     border-radius: 11px;
-    color: #8D8D96;
+    color: var(--text-muted);
     font-size: 14px;
     transition: 0.2s;
 }
@@ -571,12 +628,12 @@ footer .brand {
 
 .sidebar-link:hover {
     background: rgba(139, 92, 246, 0.08);
-    color: white;
+    color: var(--text);
 }
 
 .sidebar-link.active {
     background: rgba(139, 92, 246, 0.14);
-    color: white;
+    color: var(--text);
 }
 
 .sidebar-link.active span {
@@ -617,7 +674,7 @@ footer .brand {
 .notification-btn {
     position: relative;
     border: 1px solid var(--border);
-    background: #111114;
+    background: var(--surface);
     color: var(--silver);
     width: 40px;
     height: 40px;
@@ -648,7 +705,7 @@ footer .brand {
 
 .user-profile small {
     display: block;
-    color: #71717A;
+    color: var(--text-faint);
     font-size: 11px;
     margin-top: 2px;
 }
@@ -660,6 +717,7 @@ footer .brand {
     place-items: center;
     border-radius: 50%;
     background: linear-gradient(135deg, var(--purple), var(--violet));
+    color: var(--on-accent);
     font-weight: 700;
 }
 
@@ -699,7 +757,7 @@ footer .brand {
     padding: 13px 17px;
     border: 1px solid var(--border);
     border-radius: 14px;
-    background: #111114;
+    background: var(--surface);
 }
 
 .learning-streak > span {
@@ -712,7 +770,7 @@ footer .brand {
 }
 
 .learning-streak small {
-    color: #71717A;
+    color: var(--text-faint);
     font-size: 11px;
 }
 
@@ -723,7 +781,7 @@ footer .brand {
     padding: 9px 10px 9px 17px;
     border: 1px solid var(--border);
     border-radius: 15px;
-    background: #111114;
+    background: var(--surface);
     margin-bottom: 55px;
     transition: 0.2s;
 }
@@ -734,7 +792,7 @@ footer .brand {
 }
 
 .search-icon {
-    color: #71717A;
+    color: var(--text-faint);
     font-size: 23px;
 }
 
@@ -743,13 +801,13 @@ footer .brand {
     background: transparent;
     border: none;
     outline: none;
-    color: white;
+    color: var(--text);
     font-family: inherit;
     font-size: 14px;
 }
 
 .topic-search input::placeholder {
-    color: #62626B;
+    color: var(--text-faint);
 }
 
 .dashboard-section {
@@ -784,8 +842,8 @@ footer .brand {
     padding: 20px;
     border: 1px solid var(--border);
     border-radius: 16px;
-    background: #111114;
-    color: white;
+    background: var(--surface);
+    color: var(--text);
     cursor: pointer;
     transition: 0.25s;
     font-family: inherit;
@@ -794,7 +852,7 @@ footer .brand {
 .subject-card:hover {
     transform: translateY(-4px);
     border-color: rgba(139, 92, 246, 0.45);
-    background: #141419;
+    background: var(--surface-raised);
 }
 
 .subject-icon {
@@ -804,7 +862,7 @@ footer .brand {
     place-items: center;
     border-radius: 12px;
     background: rgba(139, 92, 246, 0.12);
-    color: #B69CFF;
+    color: var(--accent-soft);
     font-size: 19px;
     margin-bottom: 17px;
 }
@@ -816,7 +874,7 @@ footer .brand {
 }
 
 .subject-card small {
-    color: #71717A;
+    color: var(--text-faint);
     font-size: 11px;
 }
 
@@ -829,7 +887,7 @@ footer .brand {
 .lesson-card {
     padding: 24px;
     border: 1px solid var(--border);
-    background: #111114;
+    background: var(--surface);
     border-radius: 18px;
 }
 
@@ -837,7 +895,7 @@ footer .brand {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    color: #71717A;
+    color: var(--text-faint);
     font-size: 11px;
 }
 
@@ -853,7 +911,7 @@ footer .brand {
 }
 
 .lesson-card p {
-    color: #85858E;
+    color: var(--text-muted);
     font-size: 13px;
     max-width: 500px;
 }
@@ -861,7 +919,7 @@ footer .brand {
 .progress {
     height: 5px;
     border-radius: 20px;
-    background: #252529;
+    background: var(--track);
     margin: 22px 0 17px;
     overflow: hidden;
 }
@@ -891,7 +949,7 @@ footer .brand {
 .performance-card,
 .ai-dashboard-card {
     border: 1px solid var(--border);
-    background: #111114;
+    background: var(--surface);
     border-radius: 18px;
     padding: 25px;
 }
@@ -944,7 +1002,7 @@ footer .brand {
 
 .bar {
     height: 6px;
-    background: #252529;
+    background: var(--track);
     border-radius: 20px;
     overflow: hidden;
 }
@@ -962,7 +1020,7 @@ footer .brand {
             rgba(109, 40, 217, 0.25),
             transparent 50%
         ),
-        #111114;
+        var(--surface);
 }
 
 .ai-small-icon {
@@ -972,7 +1030,7 @@ footer .brand {
     place-items: center;
     border-radius: 12px;
     background: rgba(139, 92, 246, 0.14);
-    color: #B69CFF;
+    color: var(--accent-soft);
     margin-bottom: 20px;
 }
 
@@ -982,7 +1040,7 @@ footer .brand {
 }
 
 .ai-dashboard-card p {
-    color: #85858E;
+    color: var(--text-muted);
     font-size: 13px;
     margin-bottom: 25px;
 }
@@ -1368,7 +1426,7 @@ footer .brand {
 
 .back-link {
     display: inline-block;
-    color: #85858E;
+    color: var(--text-muted);
     font-size: 13px;
     margin-bottom: 28px;
     transition: 0.2s;
@@ -1385,7 +1443,7 @@ footer .brand {
 }
 
 .lesson-heading p {
-    color: #85858E;
+    color: var(--text-muted);
     font-size: 14px;
 }
 
@@ -1404,7 +1462,7 @@ footer .brand {
     display: flex;
     gap: 9px;
     align-items: center;
-    color: #85858E;
+    color: var(--text-muted);
     font-size: 12px;
     margin-bottom: 18px;
 }
@@ -1415,7 +1473,7 @@ footer .brand {
 
 .lesson-body {
     padding: 32px;
-    background: #111114;
+    background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 18px;
 }
@@ -1430,7 +1488,7 @@ footer .brand {
 }
 
 .lesson-body p {
-    color: #92929A;
+    color: var(--text-muted);
     font-size: 14px;
     line-height: 1.8;
     margin-bottom: 16px;
@@ -1456,7 +1514,7 @@ footer .brand {
     margin: 28px 0;
     padding: 25px;
     text-align: center;
-    background: #0C0C0F;
+    background: var(--surface-sunken);
     border: 1px solid var(--border);
     border-radius: 14px;
 }
@@ -1472,14 +1530,14 @@ footer .brand {
 
 .formula-card strong {
     font-size: 15px;
-    color: #D4D4D8;
+    color: var(--silver);
 }
 
 .key-points {
     margin-top: 30px;
     padding: 22px;
     border-radius: 14px;
-    background: #0C0C0F;
+    background: var(--surface-sunken);
     border: 1px solid var(--border);
 }
 
@@ -1494,7 +1552,7 @@ footer .brand {
 }
 
 .key-points li {
-    color: #92929A;
+    color: var(--text-muted);
     font-size: 13px;
     line-height: 1.8;
     margin-bottom: 5px;
@@ -1515,7 +1573,7 @@ footer .brand {
             rgba(109, 40, 217, 0.18),
             transparent 55%
         ),
-        #111114;
+        var(--surface);
 }
 
 .lesson-quiz-cta h2 {
@@ -1524,7 +1582,7 @@ footer .brand {
 }
 
 .lesson-quiz-cta p {
-    color: #85858E;
+    color: var(--text-muted);
     font-size: 12px;
 }
 
@@ -1534,7 +1592,7 @@ footer .brand {
     height: 560px;
     display: flex;
     flex-direction: column;
-    background: #111114;
+    background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 18px;
     overflow: hidden;
@@ -1562,7 +1620,7 @@ footer .brand {
 
 .tutor-header small {
     display: block;
-    color: #71717A;
+    color: var(--text-faint);
     font-size: 10px;
     margin-top: 3px;
 }
@@ -1587,14 +1645,14 @@ footer .brand {
 
 .ai-message {
     align-self: flex-start;
-    color: #BDBDC4;
-    background: #19191D;
+    color: var(--silver);
+    background: var(--surface-raised);
     border: 1px solid var(--border);
 }
 
 .student-message {
     align-self: flex-end;
-    color: white;
+    color: var(--text);
     background: rgba(139, 92, 246, 0.18);
     border: 1px solid rgba(139, 92, 246, 0.2);
 }
@@ -1613,8 +1671,8 @@ footer .brand {
     border: 1px solid var(--border);
     border-radius: 10px;
     outline: none;
-    background: #0C0C0F;
-    color: white;
+    background: var(--surface-sunken);
+    color: var(--text);
     font-family: inherit;
     font-size: 11px;
 }
@@ -1628,7 +1686,7 @@ footer .brand {
     border: none;
     border-radius: 10px;
     background: var(--purple);
-    color: white;
+    color: var(--on-accent);
     cursor: pointer;
     font-size: 17px;
 }
@@ -1715,7 +1773,7 @@ footer .brand {
 }
 
 .quiz-heading p {
-    color: #CBD5E1;
+    color: var(--silver);
 }
 
 .quiz-container {
@@ -1733,18 +1791,18 @@ footer .brand {
     justify-content: space-between;
     gap: 6px 20px;
     margin-bottom: 12px;
-    color: #CBD5E1;
+    color: var(--silver);
 }
 
 #quizScore {
-    color: #FFFFFF;
+    color: var(--text);
 }
 
 .quiz-progress-bar {
     width: 100%;
     height: 7px;
     border-radius: 20px;
-    background: rgba(255, 255, 255, 0.08);
+    background: var(--border);
     overflow: hidden;
 }
 
@@ -1754,20 +1812,20 @@ footer .brand {
     border-radius: inherit;
     background: linear-gradient(
         90deg,
-        #8B5CF6,
-        #6D28D9
+        var(--purple),
+        var(--violet)
     );
 }
 
 .question-card {
     padding: 32px;
     border-radius: 20px;
-    background: rgba(255, 255, 255, 0.035);
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: var(--surface-glass);
+    border: 1px solid var(--border);
 }
 
 .question-label {
-    color: #8B5CF6;
+    color: var(--purple);
     font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: 1.5px;
@@ -1795,10 +1853,10 @@ footer .brand {
 
     padding: 15px 17px;
 
-    color: #FFFFFF;
-    background: rgba(255, 255, 255, 0.035);
+    color: var(--text);
+    background: var(--surface-glass);
 
-    border: 1px solid rgba(255, 255, 255, 0.09);
+    border: 1px solid var(--border);
     border-radius: 13px;
 
     cursor: pointer;
@@ -1821,13 +1879,13 @@ footer .brand {
     border-radius: 9px;
 
     background: rgba(139, 92, 246, 0.12);
-    color: #A78BFA;
+    color: var(--accent-soft);
 
     font-weight: 700;
 }
 
 .answer-option:hover {
-    border-color: #8B5CF6;
+    border-color: var(--purple);
     background: rgba(139, 92, 246, 0.08);
     transform: translateY(-1px);
 }
@@ -1844,10 +1902,10 @@ footer .brand {
     padding: 12px 20px;
 
     border-radius: 10px;
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    border: 1px solid var(--border-strong);
 
     background: transparent;
-    color: #CBD5E1;
+    color: var(--silver);
 
     cursor: pointer;
 
@@ -1930,7 +1988,7 @@ footer .brand {
 }
 
 .answer-option.selected {
-    border-color: #8B5CF6;
+    border-color: var(--purple);
     background: rgba(139, 92, 246, 0.15);
 }
 
@@ -1956,9 +2014,9 @@ footer .brand {
 
     border-radius: 24px;
 
-    background: rgba(255, 255, 255, 0.035);
+    background: var(--surface-glass);
 
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--border);
 }
 
 .result-card h1 {
@@ -1969,7 +2027,7 @@ footer .brand {
 }
 
 .result-card > p {
-    color: #A1A1AA;
+    color: var(--text-muted);
 }
 
 .score-circle {
@@ -1993,13 +2051,13 @@ footer .brand {
     font-family: "Space Grotesk", sans-serif;
     font-size: 2.4rem;
 
-    color: #A78BFA;
+    color: var(--accent-soft);
 }
 
 .score-circle span {
     margin-top: 5px;
 
-    color: #A1A1AA;
+    color: var(--text-muted);
 
     font-size: 0.85rem;
 }
@@ -2070,7 +2128,7 @@ footer .brand {
 }
 
 .subject-card.selected {
-    border-color: #8B5CF6;
+    border-color: var(--purple);
     background: rgba(139, 92, 246, 0.12);
     transform: translateY(-2px);
 }
@@ -2113,12 +2171,12 @@ footer .brand {
     border: 1px solid rgba(139, 92, 246, 0.3);
     border-radius: 30px;
     background: rgba(139, 92, 246, 0.08);
-    color: #D8C8FF;
+    color: var(--accent-soft);
     font-size: 12px;
 }
 
 .tutor-topic-chip strong {
-    color: white;
+    color: var(--text);
     font-weight: 600;
 }
 
@@ -2137,7 +2195,7 @@ footer .brand {
     min-height: 0;
     border: 1px solid var(--border);
     border-radius: 18px;
-    background: #111114;
+    background: var(--surface);
     overflow: hidden;
 }
 
@@ -2162,7 +2220,7 @@ footer .brand {
     border: none;
     border-radius: 9px;
     background: var(--purple);
-    color: white;
+    color: var(--on-accent);
     font-family: inherit;
     font-size: 12px;
     font-weight: 600;
@@ -2191,8 +2249,8 @@ footer .brand {
     padding: 12px 13px;
     border: 1px solid transparent;
     border-radius: 11px;
-    background: #17171B;
-    color: white;
+    background: var(--surface-raised);
+    color: var(--text);
     font-family: inherit;
     cursor: pointer;
     transition: 0.2s;
@@ -2217,7 +2275,7 @@ footer .brand {
 
 .conversation-item .c-preview {
     font-size: 11px;
-    color: #85858E;
+    color: var(--text-muted);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -2229,7 +2287,7 @@ footer .brand {
     justify-content: space-between;
     gap: 8px;
     font-size: 10px;
-    color: #62626B;
+    color: var(--text-faint);
 }
 
 .conversation-item .c-meta > span:first-child {
@@ -2241,19 +2299,19 @@ footer .brand {
 .conversation-delete {
     flex-shrink: 0;
     padding: 0 3px;
-    color: #62626B;
+    color: var(--text-faint);
     font-size: 12px;
     line-height: 1;
     cursor: pointer;
 }
 
 .conversation-delete:hover {
-    color: #F87171;
+    color: var(--danger-text);
 }
 
 .conversation-empty {
     padding: 22px 14px;
-    color: #62626B;
+    color: var(--text-faint);
     font-size: 12px;
     text-align: center;
 }
@@ -2264,7 +2322,7 @@ footer .brand {
     min-height: 0;
     border: 1px solid var(--border);
     border-radius: 18px;
-    background: #111114;
+    background: var(--surface);
     overflow: hidden;
 }
 
@@ -2301,7 +2359,7 @@ footer .brand {
 
 .chat-panel-topic small {
     display: block;
-    color: #71717A;
+    color: var(--text-faint);
     font-size: 11px;
     margin-top: 2px;
 }
@@ -2323,7 +2381,7 @@ footer .brand {
 }
 
 .clear-chat-btn:hover {
-    color: white;
+    color: var(--text);
     border-color: rgba(248, 113, 113, 0.5);
 }
 
@@ -2353,7 +2411,7 @@ footer .brand {
     padding: 8px 12px;
     border: 1px solid var(--border);
     border-radius: 20px;
-    background: #17171B;
+    background: var(--surface-raised);
     color: var(--silver);
     font-family: inherit;
     font-size: 12px;
@@ -2362,7 +2420,7 @@ footer .brand {
 }
 
 .suggested-questions button:hover {
-    color: white;
+    color: var(--text);
     border-color: rgba(139, 92, 246, 0.45);
 }
 
@@ -2457,7 +2515,7 @@ footer .brand {
     padding: 38px 34px;
     border: 1px solid var(--border);
     border-radius: 22px;
-    background: #111114;
+    background: var(--surface);
 }
 
 .auth-brand {
@@ -2472,7 +2530,7 @@ footer .brand {
 }
 
 .auth-sub {
-    color: #85858E;
+    color: var(--text-muted);
     font-size: 14px;
     margin-bottom: 22px;
 }
@@ -2484,20 +2542,20 @@ footer .brand {
     line-height: 1.5;
     margin-bottom: 18px;
     border: 1px solid var(--border);
-    background: #17171B;
+    background: var(--surface-raised);
     color: var(--silver);
 }
 
 .auth-notice.error {
     border-color: rgba(248, 113, 113, 0.4);
     background: rgba(248, 113, 113, 0.08);
-    color: #FCA5A5;
+    color: var(--danger-text);
 }
 
 .auth-notice.success {
     border-color: rgba(34, 197, 94, 0.4);
     background: rgba(34, 197, 94, 0.08);
-    color: #86EFAC;
+    color: var(--success-text);
 }
 
 .auth-form {
@@ -2522,8 +2580,8 @@ footer .brand {
     padding: 12px 14px;
     border: 1px solid var(--border);
     border-radius: 11px;
-    background: #0C0C0F;
-    color: white;
+    background: var(--surface-sunken);
+    color: var(--text);
     font-family: inherit;
     font-size: 14px;
     outline: none;
@@ -2548,7 +2606,7 @@ footer .brand {
 .auth-switch {
     margin-top: 20px;
     font-size: 13px;
-    color: #85858E;
+    color: var(--text-muted);
     text-align: center;
 }
 
@@ -2609,7 +2667,7 @@ footer .brand {
     gap: 10px;
     border-color: rgba(248, 113, 113, 0.4);
     background: rgba(248, 113, 113, 0.08);
-    color: #FCA5A5;
+    color: var(--danger-text);
 }
 
 .chat-error-text {
@@ -2626,7 +2684,7 @@ footer .brand {
     border: 1px solid rgba(248, 113, 113, 0.5);
     border-radius: 9px;
     background: transparent;
-    color: #FCA5A5;
+    color: var(--danger-text);
     font-family: inherit;
     font-size: 12px;
     cursor: pointer;
@@ -2635,7 +2693,7 @@ footer .brand {
 
 .chat-retry-btn:hover {
     background: rgba(248, 113, 113, 0.15);
-    color: #fff;
+    color: var(--text);
 }
 
 /* Disabled state for the retry / generate controls during a rate-limit
@@ -2653,7 +2711,7 @@ footer .brand {
 .chat-note {
     align-self: center;
     max-width: 90%;
-    color: #85858E;
+    color: var(--text-muted);
     font-size: 11px;
     font-style: italic;
     text-align: center;
@@ -2672,7 +2730,7 @@ footer .brand {
     padding: 16px;
     border: 1px solid var(--border);
     border-radius: 14px;
-    background: #0C0C0F;
+    background: var(--surface-sunken);
 }
 
 .lesson-control {
@@ -2695,8 +2753,8 @@ footer .brand {
     padding: 10px 12px;
     border: 1px solid var(--border);
     border-radius: 10px;
-    background: #17171B;
-    color: #fff;
+    background: var(--surface-raised);
+    color: var(--text);
     font-family: inherit;
     font-size: 13px;
     outline: none;
@@ -2740,7 +2798,7 @@ footer .brand {
 .lesson-panel.is-error .ai-small-icon,
 .quiz-panel.is-error .ai-small-icon {
     background: rgba(248, 113, 113, 0.14);
-    color: #FCA5A5;
+    color: var(--danger-text);
 }
 
 .lesson-panel .btn,
@@ -2784,13 +2842,13 @@ footer .brand {
 .review-item {
     margin-bottom: 14px;
     padding: 18px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--border);
     border-radius: 14px;
-    background: rgba(255, 255, 255, 0.02);
+    background: var(--surface-glass);
 }
 
 .review-q-label {
-    color: #8B5CF6;
+    color: var(--purple);
     font-size: 0.7rem;
     font-weight: 700;
     letter-spacing: 1.5px;
@@ -2813,7 +2871,7 @@ footer .brand {
     align-items: center;
     gap: 8px 10px;
     padding: 10px 12px;
-    border: 1px solid rgba(255, 255, 255, 0.09);
+    border: 1px solid var(--border);
     border-radius: 10px;
     font-size: 0.88rem;
 }
@@ -2836,7 +2894,7 @@ footer .brand {
     place-items: center;
     border-radius: 7px;
     background: rgba(139, 92, 246, 0.12);
-    color: #A78BFA;
+    color: var(--accent-soft);
     font-weight: 700;
     font-size: 0.8rem;
 }
@@ -2850,7 +2908,7 @@ footer .brand {
 .review-tag {
     flex-shrink: 0;
     margin-left: auto;
-    color: #A1A1AA;
+    color: var(--text-muted);
     font-size: 0.68rem;
     font-weight: 700;
     letter-spacing: 0.5px;
@@ -2859,14 +2917,14 @@ footer .brand {
 
 .review-explain {
     margin-top: 10px;
-    color: #A1A1AA;
+    color: var(--text-muted);
     font-size: 0.82rem;
     line-height: 1.6;
     overflow-wrap: anywhere;
 }
 
 .review-explain strong {
-    color: #CBD5E1;
+    color: var(--silver);
 }
 
 @media (max-width: 600px) {
@@ -2878,5 +2936,63 @@ footer .brand {
     .review-tag {
         margin-left: 34px; /* line up under the option text, not the badge */
         flex-basis: 100%;
+    }
+}
+/* ------------------------------------------------------------------ */
+/* Light / dark theme toggle (button injected by js/theme.js)          */
+/* ------------------------------------------------------------------ */
+
+.theme-toggle {
+    -webkit-appearance: none;
+    appearance: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border: 1px solid var(--border);
+    border-radius: 11px;
+    background: transparent;
+    color: var(--text-faint);
+    font-family: inherit;
+    font-size: 15px;
+    line-height: 1;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.theme-toggle:hover {
+    color: var(--text);
+    border-color: rgba(139, 92, 246, 0.4);
+}
+
+/* In the app sidebar, alongside Settings / Log Out */
+.sidebar-bottom .theme-toggle {
+    width: 100%;
+    padding: 12px 14px;
+}
+
+/* On the marketing navbar, alongside Sign In / Get Started */
+.nav-actions .theme-toggle {
+    padding: 10px 14px;
+}
+
+/* On pages with neither (auth screens) it floats top-right */
+.theme-toggle-floating {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 200;
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    border-radius: 50%;
+    background: var(--surface);
+    box-shadow: 0 6px 20px var(--shadow-strong);
+}
+
+@media (max-width: 800px) {
+
+    .sidebar-bottom .theme-toggle {
+        padding: 12px 0;
     }
 }
